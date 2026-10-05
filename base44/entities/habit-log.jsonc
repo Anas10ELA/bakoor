@@ -1,0 +1,21 @@
+{
+  "name": "HabitLog",
+  "type": "object",
+  "properties": {
+    "habit_id": { "type": "string", "description": "Habit record id" },
+    "log_date": { "type": "string", "format": "date" },
+    "actual_amount": { "type": "number", "minimum": 0, "maximum": 100000 },
+    "actual_unit": { "type": "string" },
+    "actual_duration_minutes": { "type": "integer", "minimum": 0, "maximum": 1440 },
+    "completed_target": { "type": "boolean", "default": false },
+    "used_minimum": { "type": "boolean", "default": false },
+    "note": { "type": "string", "maxLength": 500 }
+  },
+  "required": ["habit_id", "log_date", "actual_amount", "actual_unit"],
+  "rls": {
+    "create": { "user_condition": { "id": "{{user.id}}" } },
+    "read": { "created_by": "{{user.email}}" },
+    "update": { "created_by": "{{user.email}}" },
+    "delete": { "created_by": "{{user.email}}" }
+  }
+}

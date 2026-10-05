@@ -1,0 +1,44 @@
+{
+  "name": "Habit",
+  "type": "object",
+  "properties": {
+    "title": { "type": "string", "description": "Measurable habit title" },
+    "category": {
+      "type": "string",
+      "enum": ["worship", "health", "knowledge", "family", "personal"],
+      "default": "personal"
+    },
+    "amount": { "type": "integer", "minimum": 1, "maximum": 1000, "description": "Full habit amount" },
+    "unit": { "type": "string", "description": "Minutes, pages, verses, repetitions, or another unit" },
+    "duration_minutes": { "type": "integer", "minimum": 5, "maximum": 240, "default": 20 },
+    "energy_required": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "default": "low"
+    },
+    "minimum_amount": { "type": "integer", "minimum": 1, "maximum": 1000, "description": "Survival-plan amount" },
+    "minimum_unit": { "type": "string", "description": "Unit used for the survival plan" },
+    "minimum_duration_minutes": { "type": "integer", "minimum": 5, "maximum": 120, "default": 5 },
+    "preferred_anchor": {
+      "type": "string",
+      "enum": ["flexible", "after_fajr", "morning", "after_dhuhr", "after_asr", "after_maghrib", "after_isha"],
+      "default": "morning"
+    },
+    "repeat_days": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 0, "maximum": 6 },
+      "description": "Local weekdays, where 0 is Sunday and 6 is Saturday"
+    },
+    "frequency_per_week": { "type": "integer", "minimum": 1, "maximum": 7, "default": 7 },
+    "completed_today": { "type": "boolean", "default": false },
+    "completion_count": { "type": "integer", "minimum": 0, "default": 0 },
+    "active": { "type": "boolean", "default": true }
+  },
+  "required": ["title", "amount", "unit", "minimum_amount", "minimum_unit"],
+  "rls": {
+    "create": { "user_condition": { "id": "{{user.id}}" } },
+    "read": { "created_by": "{{user.email}}" },
+    "update": { "created_by": "{{user.email}}" },
+    "delete": { "created_by": "{{user.email}}" }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "name": "Task",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "A concrete, outcome-oriented task title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional task details"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["inbox", "planned", "in_progress", "completed", "deferred", "cancelled"],
+      "default": "planned",
+      "description": "Task lifecycle status"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["worship", "work", "study", "family", "health", "growth", "personal"],
+      "default": "personal",
+      "description": "Life area served by the task"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["essential", "important", "optional"],
+      "default": "important",
+      "description": "Daily priority tier"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["light", "medium", "hard"],
+      "default": "medium",
+      "description": "Expected cognitive difficulty"
+    },
+    "energy_required": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "default": "medium",
+      "description": "Energy level needed to do the task well"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the task is planned for"
+    },
+    "start_time": {
+      "type": "string",
+      "format": "time",
+      "description": "Optional exact start time"
+    },
+    "end_time": {
+      "type": "string",
+      "format": "time",
+      "description": "Optional exact end time"
+    },
+    "duration_minutes": {
+      "type": "integer",
+      "minimum": 5,
+      "maximum": 480,
+      "default": 30,
+      "description": "Estimated duration in minutes"
+    },
+    "actual_minutes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 720,
+      "description": "Actual focused minutes spent"
+    },
+    "period_anchor": {
+      "type": "string",
+      "enum": ["before_fajr", "after_fajr", "morning", "after_dhuhr", "after_asr", "after_maghrib", "after_isha", "fixed"],
+      "default": "morning",
+      "description": "Prayer-centered period used for flexible scheduling"
+    },
+    "time_block_id": {
+      "type": "string",
+      "description": "Associated TimeBlock record ID"
+    },
+    "goal_id": {
+      "type": "string",
+      "description": "Associated Goal record ID"
+    },
+    "minimum_version": {
+      "type": "string",
+      "description": "A smaller survival-plan version of the task"
+    },
+    "minimum_duration_minutes": {
+      "type": "integer",
+      "minimum": 5,
+      "maximum": 120,
+      "description": "Estimated duration of the smaller survival-plan version"
+    },
+    "suggested_from_task_id": {
+      "type": "string",
+      "description": "Previous task used as the source of a repeated-task suggestion"
+    },
+    "recurrence_key": {
+      "type": "string",
+      "description": "Normalized key used to recognize repeated tasks"
+    },
+    "intention": {
+      "type": "string",
+      "description": "Optional personal intention or reason"
+    },
+    "is_deep_work": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the task needs a protected deep-work session"
+    }
+  },
+  "required": ["title"],
+  "rls": {
+    "create": { "user_condition": { "id": "{{user.id}}" } },
+    "read": { "created_by": "{{user.email}}" },
+    "update": { "created_by": "{{user.email}}" },
+    "delete": { "created_by": "{{user.email}}" }
+  }
+}

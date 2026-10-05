@@ -1,0 +1,38 @@
+{
+  "name": "DailyReview",
+  "type": "object",
+  "properties": {
+    "review_date": { "type": "string", "format": "date" },
+    "energy_level": { "type": "string", "enum": ["low", "medium", "high"], "default": "medium" },
+    "focus_quality": { "type": "integer", "minimum": 1, "maximum": 5, "default": 3 },
+    "deep_work_minutes": { "type": "integer", "minimum": 0, "maximum": 720, "default": 0 },
+    "planned_tasks": { "type": "integer", "minimum": 0, "maximum": 100, "default": 0 },
+    "completed_tasks": { "type": "integer", "minimum": 0, "maximum": 100, "default": 0 },
+    "completion_rate": { "type": "integer", "minimum": 0, "maximum": 100, "default": 0 },
+    "gratitude": { "type": "array", "items": { "type": "string" }, "description": "Up to three good things from the day" },
+    "deferred_reason": {
+      "type": "string",
+      "enum": ["none", "underestimated", "unclear", "low_energy", "interruption", "overplanned", "resistance", "not_important"],
+      "default": "none"
+    },
+    "balance": {
+      "type": "object",
+      "properties": {
+        "worship": { "type": "string" },
+        "work": { "type": "string" },
+        "family": { "type": "string" },
+        "health": { "type": "string" },
+        "rest": { "type": "string" },
+        "growth": { "type": "string" }
+      }
+    },
+    "tomorrow_adjustment": { "type": "string", "description": "One practical adjustment for tomorrow" }
+  },
+  "required": ["review_date"],
+  "rls": {
+    "create": { "user_condition": { "id": "{{user.id}}" } },
+    "read": { "created_by": "{{user.email}}" },
+    "update": { "created_by": "{{user.email}}" },
+    "delete": { "created_by": "{{user.email}}" }
+  }
+}

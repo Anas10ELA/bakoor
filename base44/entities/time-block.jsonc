@@ -1,0 +1,64 @@
+{
+  "name": "TimeBlock",
+  "type": "object",
+  "properties": {
+    "title": { "type": "string", "description": "Block title" },
+    "block_type": {
+      "type": "string",
+      "enum": ["prayer", "sleep", "fixed", "deep_work", "light_work", "habit", "family", "rest", "buffer", "open"],
+      "default": "open",
+      "description": "Purpose of the time block"
+    },
+    "scheduled_date": { "type": "string", "format": "date", "description": "Block date" },
+    "start_time": { "type": "string", "format": "time", "description": "Exact block start" },
+    "end_time": { "type": "string", "format": "time", "description": "Exact block end" },
+    "duration_minutes": { "type": "integer", "minimum": 5, "maximum": 720, "description": "Block capacity" },
+    "prayer_anchor": {
+      "type": "string",
+      "enum": ["none", "fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"],
+      "default": "none",
+      "description": "Prayer that moves this block when timings change"
+    },
+    "anchor_offset_minutes": { "type": "integer", "minimum": -180, "maximum": 360, "default": 0, "description": "Offset from prayer time" },
+    "energy_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "default": "medium",
+      "description": "Expected energy in this block"
+    },
+    "is_locked": { "type": "boolean", "default": false, "description": "Prevents the planning engine from moving the block" },
+    "flexibility_minutes": { "type": "integer", "minimum": 0, "maximum": 180, "default": 0, "description": "How far the block may move" },
+    "repeat_days": { "type": "array", "items": { "type": "string" }, "description": "Weekdays on which the block repeats" },
+    "color_key": { "type": "string", "enum": ["green", "blue", "amber", "rose", "neutral"], "default": "neutral" },
+    "source_task_id": { "type": "string", "description": "Task scheduled into this block by the day-path engine" },
+    "source_segment_index": { "type": "integer", "minimum": 1, "maximum": 20, "description": "Segment order when a long task is split" },
+    "generated_by": {
+      "type": "string",
+      "enum": ["user", "bakoor", "zayd"],
+      "default": "user",
+      "description": "Whether the block was entered manually or proposed by Bakoor"
+    },
+    "linked_task_id": {
+      "type": "string",
+      "description": "Optional flexible task that should be scheduled relative to this block"
+    },
+    "linked_task_title": {
+      "type": "string",
+      "description": "Fallback task title for relative scheduling"
+    },
+    "relative_offset_minutes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 720,
+      "default": 0,
+      "description": "Minutes from this block start to the linked task start"
+    }
+  },
+  "required": ["title", "block_type", "start_time", "end_time"],
+  "rls": {
+    "create": { "user_condition": { "id": "{{user.id}}" } },
+    "read": { "created_by": "{{user.email}}" },
+    "update": { "created_by": "{{user.email}}" },
+    "delete": { "created_by": "{{user.email}}" }
+  }
+}

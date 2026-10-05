@@ -1,0 +1,23 @@
+{
+  "name": "Goal",
+  "type": "object",
+  "properties": {
+    "title": { "type": "string", "description": "Goal title" },
+    "area": {
+      "type": "string",
+      "enum": ["worship", "family", "work", "study", "health", "finance", "growth", "rest"],
+      "default": "growth"
+    },
+    "outcome": { "type": "string", "description": "Observable result that defines success" },
+    "status": { "type": "string", "enum": ["active", "paused", "completed"], "default": "active" },
+    "target_date": { "type": "string", "format": "date" },
+    "weekly_minutes": { "type": "integer", "minimum": 0, "maximum": 10080, "default": 0 }
+  },
+  "required": ["title", "outcome"],
+  "rls": {
+    "create": { "user_condition": { "id": "{{user.id}}" } },
+    "read": { "created_by": "{{user.email}}" },
+    "update": { "created_by": "{{user.email}}" },
+    "delete": { "created_by": "{{user.email}}" }
+  }
+}
